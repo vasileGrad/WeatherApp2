@@ -1,5 +1,6 @@
 package com.example.vasile.weatherapp2;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
     // call the Weather Service
     private YahooWeatherService service;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +33,11 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         locationTextView = (TextView)findViewById(R.id.locationTextView);
 
         service = new YahooWeatherService(this); // this - as a callback
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.show();
+
         service.refreshWeather("Roma, IT");
-
-
     }
 
     @Override
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
     @Override
     public void serviceFailure(Exception exception) {
-        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+        dialog.hide();
     }
 }
